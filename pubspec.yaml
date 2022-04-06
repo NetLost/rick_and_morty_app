@@ -47,12 +47,14 @@ dependencies:
 
   # Local cache
   shared_preferences: ^2.0.13
+  cached_network_image: ^3.2.0
 
   # Bloc / Cubit for state management
   flutter_bloc: ^8.0.1
 
   # DI
   get_it: ^7.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -77,8 +79,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/noimage.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
