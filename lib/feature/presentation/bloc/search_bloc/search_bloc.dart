@@ -11,18 +11,18 @@ class PersonSearchBloc extends Bloc<PersonSearchEvent, PersonSearchState> {
   final SearchPerson searchPerson;
 
   PersonSearchBloc({required this.searchPerson}) : super(PersonEmpty()) {
-    on<SearchPersons>(
-        (event, emit) => _mapFetchPersonToState(event.personQuery));
-  }
-
-  Stream<PersonSearchState> _mapFetchPersonToState(String personQuery) async* {
-    yield PersonSearchLoading();
-
-    final failureOrPerson =
-        await searchPerson(SearchPersonParams(query: personQuery));
-    yield failureOrPerson.fold(
-        (failure) => PersonSearchError(message: _mapFailureToMessage(failure)),
-        (person) => PersonSearchLoaded(persons: person));
+    on<SearchPersons>((event, emit) async {
+      emit(PersonSearchLoading());
+      try {
+        final failureOrPerson =
+            await searchPerson(SearchPersonParams(query: event.personQuery));
+             failureOrPerson.fold(
+        (failure) {emit(PersonSearchError(message: _mapFailureToMessage(failure)));} ,
+        (person) {emit(PersonSearchLoaded(persons: person));});
+      } catch (e) {
+        emit(const PersonSearchError(message: 'Unexpected Error'));
+      }
+    });
   }
 
   String _mapFailureToMessage(Failure failure) {
